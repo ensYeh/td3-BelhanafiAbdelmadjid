@@ -21,4 +21,8 @@ public class AdresseIP
     public String getIp() {
         return this.ip;
     }
+    @Override
+    public String toString() {
+        return ip;
+    }
 }

@@ -1,8 +1,10 @@
 package fr.uvsq.cprog.collex;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,5 +94,36 @@ public class Dns {
             }
         }
         return result;
+    }
+    public void addItem(AdresseIP adresse, NomMachine nom) throws IOException {
+        if (adresse == null || nom == null) {
+            throw new IllegalArgumentException("Adresse et nom doivent être non nuls.");
+        }
+        // Vérifier si le nom de machine existe déjà
+        for (DnsItem it : entries) {
+            NomMachine existing = it.getNomMachine();
+            if (existing != null && existing.equals(nom)) {
+                throw new IllegalArgumentException("ERREUR : Le nom de machine existe déjà !");
+            }
+        }
+
+        // Préparer la ligne à écrire (même format que loadDataBase : "ip nom")
+        String line = adresse.getIp() + " " + nom.getNom() + System.lineSeparator();
+        
+        // Écriture centralisée via DBEcrireEntry
+        DBEcrireEntry(line);
+
+        // Mettre à jour la collection en mémoire
+        entries.add(new DnsItem(adresse, nom));
+    }
+
+    // Méthode unique pour écrire une entrée dans la base
+    private void DBEcrireEntry(String line) throws IOException {
+        try {
+            Files.write(dbPath, line.getBytes(StandardCharsets.UTF_8),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new IOException("Impossible d'écrire dans la base de données : " + e.getMessage(), e);
+        }
     }
 }

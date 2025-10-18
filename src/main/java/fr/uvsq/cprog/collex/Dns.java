@@ -16,7 +16,6 @@ public class Dns {
     private ArrayList<DnsItem> entries = new ArrayList<>();
     // On l'utilise pour lire le fichier de configuration dans notre classe
     private Properties props = new Properties();
-ee
     public Dns() throws IOException {
         String filePath = this.props.getProperty("db.file");
         if(filePath == null) {
@@ -44,5 +43,26 @@ ee
                 throw new IOException("Format de ligne invalide dans la base de données : " + line);
             }
         }
+    }
+    // Retourne la première entrée correspondant à l'adresse IP donnée, ou null si introuvable.
+    public DnsItem getItemByIp(AdresseIP ip) {
+        if (ip == null) return null;
+        for (DnsItem it : entries) {
+            if (ip.equals(it.getAdresseIP())) {
+                return it;
+            }
+        }
+        return null;
+    }
+
+    // Retourne la première entrée correspondant au nom de machine donné, ou null si introuvable.
+    public DnsItem getItemByNom(NomMachine nom) {
+        if (nom == null) return null;
+        for (DnsItem it : entries) {
+            if (nom.equals(it.getNomMachine())) {
+                return it;
+            }
+        }
+        return null;
     }
 }

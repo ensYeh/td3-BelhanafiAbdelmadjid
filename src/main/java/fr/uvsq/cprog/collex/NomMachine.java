@@ -1,4 +1,5 @@
 package fr.uvsq.cprog.collex;
+import java.util.Objects;
 import java.util.regex.Pattern;
 public class NomMachine {
     private String nom;
@@ -19,5 +20,22 @@ public class NomMachine {
     
     public String getNom() {
         return nom;
+    }
+
+    @Override
+    public String toString() {
+        return nom;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NomMachine)) return false;
+        NomMachine that = (NomMachine) o;
+        return nom.equals(that.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom);
     }
 }

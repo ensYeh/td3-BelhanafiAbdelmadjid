@@ -1,4 +1,5 @@
 package fr.uvsq.cprog.collex;
+import java.util.Objects;
 import java.util.regex.Pattern;
 /**
  * Hello world!
@@ -24,5 +25,16 @@ public class AdresseIP
     @Override
     public String toString() {
         return ip;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AdresseIP)) return false;
+        AdresseIP that = (AdresseIP) o;
+        return ip.equals(that.ip);  
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip);
     }
 }

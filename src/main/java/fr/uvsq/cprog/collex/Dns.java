@@ -65,4 +65,32 @@ public class Dns {
         }
         return null;
     }
+
+    public List<DnsItem> getItemsByDomain(String domain) {
+        List<DnsItem> result = new ArrayList<>();
+        // on gère le cas null ou vide , donc on retourne une liste vide
+        if (domain == null) return result;
+
+        //on doit bien formater l'input utilisateur
+        String d = domain.trim().toLowerCase();
+
+        // si apres formatage c'est vide on retourne une liste vide
+        if (d.isEmpty()) return result;
+
+        for (DnsItem it : entries) {
+            NomMachine nm = it.getNomMachine();
+            if (nm == null) {
+                continue;
+            }
+            // on récupère le nom de domaine de la machine
+            String nomDomaine = nm.getNomDomaine();
+            if (nomDomaine == null || nomDomaine.isEmpty()) continue;
+
+            String lower = nomDomaine.toLowerCase();
+            if (lower.equals(d) || lower.endsWith("." + d)) {
+                result.add(it);
+            }
+        }
+        return result;
+    }
 }

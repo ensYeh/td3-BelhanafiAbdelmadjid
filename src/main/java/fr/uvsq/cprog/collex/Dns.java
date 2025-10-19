@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class Dns {
     // On l'utilise pour lire le fichier de configuration dans notre classe
     private Properties props = new Properties();
     public Dns() throws IOException {
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("dns.properties")) {
+        if (in == null) {
+            throw new IOException("dns.properties introuvable sur le classpath");
+        }
+        this.props.load(in);
+    }
         String filePath = this.props.getProperty("db.file");
         if(filePath == null) {
             throw new IllegalArgumentException("Le chemin de la base de données n'est pas spécifié dans les propriétés.");

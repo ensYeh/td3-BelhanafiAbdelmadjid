@@ -53,8 +53,41 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <!-- Nous permet d'exécuter la classe principale avec : mvn exec:java -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>fr.uvsq.cprog.collex.DnsApp</mainClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- Nous permet de créer un JAR exécutable avec : mvn package -->
+        <!-- maven clean package  -->
+        <!-- java -jar target/mon-projet-1.0-SNAPSHOT.jar -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>fr.uvsq.cprog.collex.DnsApp</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
-    
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>

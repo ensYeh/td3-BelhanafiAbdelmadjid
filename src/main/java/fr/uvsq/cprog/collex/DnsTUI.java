@@ -52,6 +52,20 @@ public class DnsTUI {
             case "add":
                 if (parts.length < 3) return () -> "Usage: add <ip> <nomMachine>";
                 return new CommandAjouter(dns, parts[1], parts[2]);
+            case "ls":
+                // ls [-a] domaine
+                if (parts.length < 2) return () -> "Usage: ls [-a] <domaine>";
+                boolean sortByIp = false;
+                String domain;
+                if (parts.length == 2) {
+                    domain = parts[1];
+                } else if (parts.length == 3 && "-a".equals(parts[1])) {
+                    sortByIp = true;
+                    domain = parts[2];
+                } else {
+                    return () -> "Usage: ls [-a] <domaine>";
+                }
+                return new CommandLs(dns, domain, sortByIp);
             case "quit":
             case "exit":
                 return new CommandQuit();
